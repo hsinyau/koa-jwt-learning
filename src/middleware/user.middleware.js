@@ -1,5 +1,5 @@
 const { getUserInfo } = require('../service/user.service')
-const { userFormateError, userAlreadyExited } = require('../consitant/err.types')
+const { userFormateError, userAlreadyExited } = require('../constant/err.types')
 
 const userValidator = async (ctx, next) => {
   const { user_name, password } = ctx.request.body
