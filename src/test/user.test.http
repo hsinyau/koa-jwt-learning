@@ -1,0 +1,5 @@
+@Host = http://localhost:2333
+
+POST {{Host}}/users/register
+### 
+POST {{Host}}/users/login
