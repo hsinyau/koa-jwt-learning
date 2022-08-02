@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs')
 const { getUserInfo } = require('../service/user.service')
 const { userFormateError, userAlreadyExited, userRegisterError } = require('../constant/err.types')
 const { emit } = require('nodemon')
@@ -28,10 +29,22 @@ const verifyUser = async (ctx, next) => {
     ctx.app,emit('error', userRegisterError, ctx)
     return
   }
+
+  await next()
+}
+
+const crpytPassword = async (ctx,next) => {
+  const { password } = ctx.request.body
+  const salt = bcrypt.genSaltSync(10)
+  const hash = bcrypt.hashSync(password, salt)
+
+  ctx.request.body.password = hash
+
   await next()
 }
 
 module.exports = {
   userValidator,
-  verifyUser
+  verifyUser,
+  crpytPassword
 }
