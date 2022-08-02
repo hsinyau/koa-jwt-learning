@@ -25,4 +25,6 @@ const User = seq.define('litchi_user', {
 })
 
 // 模型同步 如果表存在, 删除重建
-User.sync({ force: true })
+// User.sync({ force: true })
+
+module.exports = User
