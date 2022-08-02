@@ -1,5 +1,6 @@
 const { getUserInfo } = require('../service/user.service')
-const { userFormateError, userAlreadyExited } = require('../constant/err.types')
+const { userFormateError, userAlreadyExited, userRegisterError } = require('../constant/err.types')
+const { emit } = require('nodemon')
 
 const userValidator = async (ctx, next) => {
   const { user_name, password } = ctx.request.body
@@ -15,8 +16,16 @@ const userValidator = async (ctx, next) => {
 const verifyUser = async (ctx, next) => {
   const { user_name } = ctx.request.body
 
-  if(await getUserInfo({ user_name })){
-    ctx.app.emit('error', userAlreadyExited, ctx)
+  try {
+    const res = await getUserInfo({ user_name })
+    if(res){
+      console.log('用户名已经存在', { user_name })
+      ctx.app.emit('error', userAlreadyExited, ctx)
+      return
+    }
+  } catch (err) {
+    console.log('获取用户信息错误', err)
+    ctx.app,emit('error', userRegisterError, ctx)
     return
   }
   await next()
