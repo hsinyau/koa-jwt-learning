@@ -1,6 +1,0 @@
-@Host = http://localhost:2333
-
-### 注册
-POST {{Host}}/users/register
-### 登录
-POST {{Host}}/users/login
